@@ -20,12 +20,11 @@ RUN apk add --no-cache tini
 
 RUN apk add --no-cache --virtual .temp shadow \
     && groupadd --gid "$GID" "$SERVICE" \
-    && useradd --uid "$UID" --gid "$GID" -m "$SERVICE" \
+    && useradd --uid "$UID" --gid "$GID" --system --shell "/sbin/nologin" "$SERVICE" \
     && apk del .temp
 
 WORKDIR /opt/$SERVICE/bin
 COPY --from=builder /opt/$SERVICE/bin .
 
 USER $SERVICE
-ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/bin/sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/opt/go/bin/server"]

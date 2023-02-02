@@ -1,14 +1,10 @@
 services:
-  app:
+  server:
     image: csang/htecho:latest
     build:
       context: .
       dockerfile: ./build/prod/Dockerfile
-
-  server:
-    extends:
-      service: app
-    command: ["./server", "--addr=0.0.0.0:8080"]
+    command: ["--addr=0.0.0.0:8080"]
     ports:
       - "8080:8080"
 
