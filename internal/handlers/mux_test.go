@@ -56,5 +56,19 @@ func TestMux(t *testing.T) {
 		mux.ServeHTTP(resp, req)
 
 		assert.Equal(t, "", resp.Header().Get("Authorization"))
+		assert.Equal(t, "", resp.Header().Get("Proxy-Authorization"))
+	})
+
+	t.Run("it echoes duplicate headers", func(t *testing.T) {
+		req, err := http.NewRequest(http.MethodPost, "/", strings.NewReader(""))
+		require.NoError(t, err)
+
+		req.Header.Add("X-Foo", "bar")
+		req.Header.Add("X-Foo", "baz")
+
+		resp := httptest.NewRecorder()
+		mux.ServeHTTP(resp, req)
+
+		assert.Equal(t, []string{"bar", "baz"}, resp.Header().Values("X-Echo-Header-X-Foo"))
 	})
 }
