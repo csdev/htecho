@@ -100,6 +100,7 @@ func TestMuxOptions(t *testing.T) {
 			responseHeaders: map[string]string{
 				"X-Echo-Header-X-Forwarded-For": "",
 				"X-Echo-Header-Forwarded":       "",
+				"X-Echo-Addr":                   "",
 			},
 		},
 		{
@@ -112,6 +113,7 @@ func TestMuxOptions(t *testing.T) {
 			responseHeaders: map[string]string{
 				"X-Echo-Header-X-Forwarded-For": "127.0.0.1",
 				"X-Echo-Header-Forwarded":       "proto=http",
+				"X-Echo-Addr":                   "127.0.0.1",
 			},
 		},
 	}
@@ -125,6 +127,7 @@ func TestMuxOptions(t *testing.T) {
 			for name, value := range test.requestHeaders {
 				req.Header.Add(name, value)
 			}
+			req.RemoteAddr = "127.0.0.1"
 
 			resp := httptest.NewRecorder()
 			mux.ServeHTTP(resp, req)
