@@ -26,6 +26,7 @@ func TestMux(t *testing.T) {
 
 		assert.Equal(t, http.StatusOK, resp.Code)
 		assert.Equal(t, http.MethodPost, resp.Header().Get("X-Echo-Method"))
+		assert.Equal(t, "/path/", resp.Header().Get("X-Echo-Path"))
 		assert.Equal(t, "query=value", resp.Header().Get("X-Echo-Query"))
 		assert.Equal(t, "application/json", resp.Header().Get("X-Echo-Header-Content-Type"))
 		assert.Equal(t, "application/json", resp.Header().Get("Content-Type"))

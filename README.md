@@ -30,6 +30,7 @@ header, or is autodetected if not present. `Content-Length` is set automatically
 Other information about the request is echoed back in the response headers:
 
 * `X-Echo-Method`: The request method, e.g., `POST`.
+* `X-Echo-Path`: The request URL path.
 * `X-Echo-Query`: The raw query string (everything after the `?` in the URL).
 * `X-Echo-Header-*`: Request headers are echoed back with this prefix, e.g., `X-Echo-Header-User-Agent`.
 

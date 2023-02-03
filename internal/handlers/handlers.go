@@ -23,6 +23,7 @@ func NewEchoHandler(o *Options) http.Handler {
 
 func (h *EchoHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("X-Echo-Method", r.Method)
+	w.Header().Add("X-Echo-Path", r.URL.EscapedPath())
 	w.Header().Add("X-Echo-Query", r.URL.RawQuery)
 
 	if h.HandlerOptions.IncludeIps {
