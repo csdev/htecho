@@ -36,6 +36,17 @@ func TestMux(t *testing.T) {
 		assert.Equal(t, body, string(data))
 	})
 
+	t.Run("it omits the query if the request does not have one", func(t *testing.T) {
+		req, err := http.NewRequest(http.MethodPost, "/", strings.NewReader(""))
+		require.NoError(t, err)
+
+		resp := httptest.NewRecorder()
+		mux.ServeHTTP(resp, req)
+
+		_, ok := resp.Header()[http.CanonicalHeaderKey("X-Echo-Query")]
+		assert.Falsef(t, ok, "expected X-Echo-Query to be missing from the header map")
+	})
+
 	t.Run("it omits the content-type if the request does not have one", func(t *testing.T) {
 		req, err := http.NewRequest(http.MethodPost, "/", strings.NewReader(""))
 		require.NoError(t, err)
