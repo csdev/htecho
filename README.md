@@ -19,6 +19,8 @@ docker run --rm csang/htecho:latest --addr=0.0.0.0:8000
 
 ## Behavior
 
+### Basic Request Information
+
 HTEcho responds to any HTTP request, regardless of HTTP method, URL path, or credentials.
 The response status code is always `200 OK`.
 
@@ -31,20 +33,32 @@ Other information about the request is echoed back in the response headers:
 * `X-Echo-Query`: The raw query string (everything after the `?` in the URL).
 * `X-Echo-Header-*`: Request headers are echoed back with this prefix, e.g., `X-Echo-Header-User-Agent`.
 
-Note: To avoid leaking sensitive data, some information is excluded by default:
+### Additional Request Information
+
+To avoid leaking sensitive data, some information is excluded by default:
 
 * Auth headers (use `--include-auth`)
-    * `Authorization`
-    * `Proxy-Authorization`
+    * `X-Echo-Header-Authorization`
+    * `X-Echo-Header-Proxy-Authorization`
 * IP address headers (use `--include-ips`)
-    * `X-Forwarded-For`
-    * `Forwarded`
+    * `X-Echo-Header-X-Forwarded-For`
+    * `X-Echo-Header-Forwarded`
+    * `X-Echo-Addr` (the client's IP address, as seen by the server)
 
 You can also use `-A` to include everything:
 
 ```bash
 docker run --rm csang/htecho:latest -A
 ```
+
+### Proxies
+
+Deploying HTEcho behind a load balancer or proxy does not result in any special behavior.
+In particular, there is no "proxy fix" middleware. `X-Echo-Addr` may return the IP address
+of the proxy, and you may need to parse `X-Echo-Header-X-Forwarded-For` on your own.
+
+As a network testing tool, HTEcho avoids parsing, validating, or transforming the request
+it receives so you can focus on the raw data.
 
 ## Example
 
