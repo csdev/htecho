@@ -25,14 +25,28 @@ The response status code is always `200 OK`.
 The response body is equal to the request body. The response `Content-Type` is echoed from the request
 header, or is autodetected if not present. `Content-Length` is set automatically.
 
-Request headers are echoed in the response, prefixed with `X-Echo-Header-`. To avoid unintentionally
-leaking credentials, the `Authorization` and `Proxy-Authorization` headers are omitted. To echo them,
-start the server with the `--include-auth` option.
+Other information about the request is echoed back in the response headers:
 
-Additionally, the request method and query string are available as `X-Echo-Method` and `X-Echo-Query`,
-respectively.
+* `X-Echo-Method`: The request method, e.g., `POST`.
+* `X-Echo-Query`: The raw query string (everything after the `?` in the URL).
+* `X-Echo-Header-*`: Request headers are echoed back with this prefix, e.g., `X-Echo-Header-User-Agent`.
 
-Example:
+Note: To avoid leaking sensitive data, some information is excluded by default:
+
+* Auth headers (use `--include-auth`)
+    * `Authorization`
+    * `Proxy-Authorization`
+* IP address headers (use `--include-ips`)
+    * `X-Forwarded-For`
+    * `Forwarded`
+
+You can also use `-A` to include everything:
+
+```bash
+docker run --rm csang/htecho:latest -A
+```
+
+## Example
 
 ```bash
 curl -v -u 'user:pass' -d '{"foo":"bar"}' -H 'Content-Type: application/json' \

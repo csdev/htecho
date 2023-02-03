@@ -25,10 +25,19 @@ func (h *EchoHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("X-Echo-Method", r.Method)
 	w.Header().Add("X-Echo-Query", r.URL.RawQuery)
 
+	if h.HandlerOptions.IncludeIps {
+		w.Header().Add("X-Echo-Addr", r.RemoteAddr)
+	}
+
 	for header, vals := range r.Header {
+		// exclude sensitive headers
 		if IsHeaderEqual(header, "Authorization") || IsHeaderEqual(header, "Proxy-Authorization") {
 			if !h.HandlerOptions.IncludeAuth {
-				continue // exclude sensitive headers
+				continue
+			}
+		} else if IsHeaderEqual(header, "X-Forwarded-For") || IsHeaderEqual(header, "Forwarded") {
+			if !h.HandlerOptions.IncludeIps {
+				continue
 			}
 		}
 		for _, val := range vals {
