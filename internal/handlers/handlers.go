@@ -54,8 +54,13 @@ func (h *EchoHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", contentType)
 	}
 
-	_, err := io.Copy(w, r.Body)
+	size, err := io.Copy(w, r.Body)
 	if err != nil {
-		log.Fatalf("%v", err)
+		log.Fatalf("htecho.server: error copying request body: %v", err)
+	}
+
+	if h.HandlerOptions.AccessLog {
+		log.Printf("htecho.request: %s %s %s (%d bytes)\n",
+			r.RemoteAddr, r.Method, r.URL.RequestURI(), size)
 	}
 }

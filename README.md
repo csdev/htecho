@@ -97,6 +97,24 @@ curl -v -u 'user:pass' -d '{"foo":"bar"}' -H 'Content-Type: application/json' \
 {"foo":"bar"}
 ```
 
+## Other Options
+
+### Access Log
+
+Log all requests to stdout:
+
+```bash
+docker run --rm csang/htecho:latest --access-log
+```
+
+Sample log format:
+
+```
+2023/02/06 16:57:51 htecho.server: listening on 0.0.0.0:8080
+2023/02/06 16:58:27 htecho.request: 172.18.0.1:52422 GET /path/to/something?query (0 bytes)
+2023/02/06 16:58:41 htecho.request: 172.18.0.1:52426 POST /path/to/something (13 bytes)
+```
+
 ## Developer Workflow
 
 Build and run the server locally using Docker Compose:

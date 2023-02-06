@@ -10,6 +10,7 @@ import (
 
 func main() {
 	opts := handlers.DefaultOptions()
+	flag.BoolVar(&opts.AccessLog, "access-log", opts.AccessLog, "log requests to stdout")
 	flag.BoolVar(&opts.IncludeAuth, "include-auth", opts.IncludeAuth,
 		"don't strip authorization headers from the response (this may leak credentials)")
 	flag.BoolVar(&opts.IncludeIps, "include-ips", opts.IncludeIps,
@@ -23,9 +24,9 @@ func main() {
 		opts.IncludeAll()
 	}
 
-	log.Printf("htecho: listening on %s", *addr)
+	log.Printf("htecho.server: listening on %s", *addr)
 	err := http.ListenAndServe(*addr, handlers.NewMux(opts))
 	if err != nil {
-		log.Fatalf("htecho: exited with error: %v", err)
+		log.Fatalf("htecho.server: exited with error: %v", err)
 	}
 }

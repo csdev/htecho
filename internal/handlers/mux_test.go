@@ -79,6 +79,10 @@ func TestMuxOptions(t *testing.T) {
 		responseHeaders map[string]string
 	}{
 		{
+			description: "access logging can be set",
+			options:     &Options{AccessLog: true},
+		},
+		{
 			description: "auth headers are excluded by default",
 			options:     DefaultOptions(),
 			requestHeaders: map[string]string{
