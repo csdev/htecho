@@ -5,17 +5,16 @@
 HTEcho is a minimal HTTP echo server, useful for testing API clients and
 network connectivity situations.
 
-Start the server on `localhost:8080`:
-
 ```bash
-docker run --rm csang/htecho:latest
+docker pull csang/htecho:0.1
+docker run --rm -p 8080:8080 csang/htecho:0.1 --addr=0.0.0.0:8080
 ```
 
-Or with a custom bind address and port:
+Use `--addr` to specify the server's bind address. Most systems also require publishing
+the container port via `docker run -p` so the container is accessible from the host.
 
-```bash
-docker run --rm csang/htecho:latest --addr=0.0.0.0:8000
-```
+See the [Docker Hub repo](https://hub.docker.com/repository/docker/csang/htecho/general)
+for available image tags and architectures.
 
 ## Behavior
 
