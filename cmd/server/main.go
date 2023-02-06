@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/csdev/htecho/internal/handlers"
 )
@@ -17,15 +18,28 @@ func main() {
 		"don't strip IP address headers from the response (this may leak network info)")
 
 	includeAll := flag.Bool("A", false, "synonym for --include-auth --include-ips")
+
 	addr := flag.String("addr", "127.0.0.1:80", "the listen address for the server")
+	readTimeout := flag.Duration("read-timeout", time.Minute,
+		"max time allowed for reading the request")
+	writeTimeout := flag.Duration("write-timeout", time.Minute,
+		"max time allowed for sending the response")
+
 	flag.Parse()
 
 	if *includeAll {
 		opts.IncludeAll()
 	}
 
+	server := &http.Server{
+		Handler:      handlers.NewMux(opts),
+		Addr:         *addr,
+		ReadTimeout:  *readTimeout,
+		WriteTimeout: *writeTimeout,
+	}
+
 	log.Printf("htecho.server: listening on %s", *addr)
-	err := http.ListenAndServe(*addr, handlers.NewMux(opts))
+	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatalf("htecho.server: exited with error: %v", err)
 	}

@@ -97,7 +97,7 @@ curl -v -u 'user:pass' -d '{"foo":"bar"}' -H 'Content-Type: application/json' \
 {"foo":"bar"}
 ```
 
-## Other Options
+## Advanced Options
 
 ### Access Log
 
@@ -113,6 +113,15 @@ Sample log format:
 2023/02/06 16:57:51 htecho.server: listening on 0.0.0.0:8080
 2023/02/06 16:58:27 htecho.request: 172.18.0.1:52422 GET /path/to/something?query (0 bytes)
 2023/02/06 16:58:41 htecho.request: 172.18.0.1:52426 POST /path/to/something (13 bytes)
+```
+
+### Server Timeouts
+
+HTEcho has 1 minute timeouts for reading the request and writing the response.
+These values can be adjusted:
+
+```bash
+docker run --rm csang/htecho:latest --read-timeout=1m --write-timeout=1m
 ```
 
 ## Developer Workflow
