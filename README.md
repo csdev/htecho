@@ -88,6 +88,7 @@ curl -v -u 'user:pass' -d '{"foo":"bar"}' -H 'Content-Type: application/json' \
 < X-Echo-Header-Content-Type: application/json
 < X-Echo-Header-User-Agent: curl/7.68.0
 < X-Echo-Method: POST
+< X-Echo-Path: /
 < X-Echo-Query: foo=bar&bar=baz
 < Date: Thu, 02 Feb 2023 22:26:38 GMT
 < Content-Length: 13
