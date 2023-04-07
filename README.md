@@ -13,7 +13,7 @@ docker run --rm -p 8080:8080 csang/htecho:0.1 --addr=0.0.0.0:8080
 Use `--addr` to specify the server's bind address. Most systems also require publishing
 the container port via `docker run -p` so the container is accessible from the host.
 
-See the [Docker Hub repo](https://hub.docker.com/repository/docker/csang/htecho/general)
+See the [Docker Hub repo](https://hub.docker.com/r/csang/htecho)
 for available image tags and architectures.
 
 ## Behavior
